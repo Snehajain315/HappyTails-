@@ -1,0 +1,33 @@
+import express from 'express';
+
+import cors from 'cors';
+import bodyParser from 'body-parser';
+
+
+import 'dotenv/config';
+import ConnectDB from './config/dbconfig.js';
+
+//Import Routes:
+import userRoute from './Routes/userRoute.js'
+import productRoute from './Routes/productRoute.js'
+import petRoute from './Routes/petRoute.js'
+
+const app= express();
+
+//middlewares:-
+app.use(cors());
+app.use(bodyParser.json());
+
+ConnectDB();
+
+//Apis:-
+app.use('/api/user', userRoute)
+app.use("/api/product", productRoute)
+app.use('/api/petRoute', petRoute)
+app.use('/uploads', express.static('uploads'))
+
+
+
+
+//Listen:-
+app.listen(process.env.PORT, ()=>{console.log(`Server is running on port ${process.env.PORT}`)})
