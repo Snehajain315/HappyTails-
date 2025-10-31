@@ -12,7 +12,9 @@ import productRoute from "./Routes/productRoute.js";
 import petRoute from "./Routes/petRoute.js";
 
 const app = express();
-const PORT= process.env.port || 5500;
+const PORT= process.env.PORT || 5500;
+
+console.log("Render is running on:", PORT)
 
 //middlewares:-
 app.use(cors({
