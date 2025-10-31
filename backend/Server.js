@@ -12,6 +12,7 @@ import productRoute from "./Routes/productRoute.js";
 import petRoute from "./Routes/petRoute.js";
 
 const app = express();
+const PORT= process.env.port || 5500;
 
 //middlewares:-
 app.use(cors({
@@ -30,6 +31,6 @@ app.use("/api/petRoute", petRoute);
 app.use("/uploads", express.static("uploads"));
 
 //Listen:-
-app.listen(process.env.PORT || 5500, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on port ${process.env.PORT}`);
 });
