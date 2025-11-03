@@ -1,5 +1,6 @@
 import userModel from "../Models/userModel.js";
 import bcryptjs from "bcryptjs";
+import crypto from 'crypto';
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/sendEmail.js";
 import "dotenv/config";

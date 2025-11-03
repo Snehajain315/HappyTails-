@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: " https://happy-tails-1ehn.onrender.com/api",
+  baseURL: "https://happytails-wkk8.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },
