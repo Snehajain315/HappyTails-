@@ -1,34 +1,40 @@
-import {Router} from 'express';
-import path from 'path';
-import multer from 'multer'
-import userController from '../Controller/userController.js'
+import { Router } from "express";
+import path from "path";
+import multer from "multer";
+import userController from "../Controller/userController.js";
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
 
-const storage= multer.diskStorage({
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
 
-    destination:(req,file,cb)=>{
-        cb(null, 'uploads/')
-    },
+const upload = multer({ storage: storage });
+const router = Router();
 
-    filename: (req,file,cb)=>{
-        cb(null, file.fieldname+ '-' + Date.now() + path.extname(file.originalname))
-    }
-})
+router.get("/", userController.getAllUsers);
 
-const upload= multer({storage: storage})
-const router= Router();
+router.get("/:id", userController.getUserById);
 
-router.get('/',userController.getAllUsers);
+router.post("/login", userController.loginUser);
 
-router.get('/:id',userController.getUserById);
+router.post(
+  "/signup",
+  upload.single("profilePicture"),
+  userController.signupUser
+);
 
-router.post('/login',userController.loginUser);
+router.post("/forgot-password", userController.forgotPassword);
 
-router.post('/signup',upload.single('profilePicture'),userController.signupUser);
+router.put("/update/:id", userController.updateUser);
 
-router.put('/update/:id',userController.updateUser);
-
-router.delete('/delete/:id',userController.removeUser);
-
+router.delete("/delete/:id", userController.removeUser);
 
 export default router;

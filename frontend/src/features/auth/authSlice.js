@@ -22,7 +22,6 @@ const authSlice= createSlice({
             state.error = null;
         })
         .addCase(loginThunk.fulfilled, (state, action)=>{
-            console.log(action)
             state.loading = false;
             state.role = action.payload.user.role;
             state.role = action.payload.token;
@@ -38,7 +37,6 @@ const authSlice= createSlice({
             state.error = null;
         })
         .addCase(signupThunk.fulfilled, (state, action)=>{
-            console.log(action.payload)
             state.loading= false;
             state.users.push(action.payload);
         })

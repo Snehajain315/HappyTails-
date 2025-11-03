@@ -6,7 +6,6 @@ export const loginThunk = createAsyncThunk(
     async(body, {rejectWithValue})=>{
         try{
         const response = await login(body);
-        console.log(response);
         return response;
         }
         catch(err){
@@ -20,7 +19,6 @@ export const signupThunk = createAsyncThunk(
     async(formData, {rejectWithValue})=>{
         try{
             const response = await signup(formData);
-            console.log(response);
             return response;
         }
         catch(err){

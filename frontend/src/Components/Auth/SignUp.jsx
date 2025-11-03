@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signupThunk } from "../../features/auth/authThunk";
+import { signupValidationSchema } from "../../validations/validation";
 
 export default function SignUp() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.auth);
   const [profilePicture, setProfilePicture] = useState(null);
   const [showconfirmPassword, setShowConfirmPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +23,8 @@ export default function SignUp() {
       confirmPassword: "",
       profilePicture: null,
     },
-    onSubmit: (values) => {
+    validationSchema: signupValidationSchema,
+    onSubmit: (values, { resetForm }) => {
       const form = new FormData();
       form.append("name", values.name);
       form.append("age", values.age);
@@ -31,7 +34,8 @@ export default function SignUp() {
       if (profilePicture) {
         form.append("profilePicture", profilePicture);
       }
-      dispatch(signupThunk(form));
+      dispatch(signupThunk(form)).then(() => navigate("/login"));
+      resetForm();
     },
   });
 
@@ -64,8 +68,17 @@ export default function SignUp() {
                 placeholder="Enter your full name"
                 value={formik.values.name}
                 onChange={formik.handleChange}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400"
+                className={`w-full px-4 py-3 rounded-lg border ${
+                  formik.touched.name && formik.errors.name
+                    ? "border-red-500"
+                    : "border-gray-300"
+                } focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400`}
               />
+              {formik.touched.name && formik.errors.name && (
+                <p className="mt-1 text-sm text-red-600 font-medium">
+                  {formik.errors.name}
+                </p>
+              )}
             </div>
 
             <div>
@@ -82,8 +95,17 @@ export default function SignUp() {
                 placeholder="Enter your age"
                 value={formik.values.age}
                 onChange={formik.handleChange}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400"
+                className={`w-full px-4 py-3 rounded-lg border ${
+                  formik.touched.age && formik.errors.age
+                    ? "border-red-500"
+                    : "border-gray-300"
+                } focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400`}
               />
+              {formik.touched.age && formik.errors.age && (
+                <p className="mt-1 text-sm text-red-600 font-medium">
+                  {formik.errors.age}
+                </p>
+              )}
             </div>
           </div>
 
@@ -102,8 +124,17 @@ export default function SignUp() {
               placeholder="Enter a valid email address"
               value={formik.values.email}
               onChange={formik.handleChange}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400"
+              className={`w-full px-4 py-3 rounded-lg border ${
+                formik.touched.email && formik.errors.email
+                  ? "border-red-500"
+                  : "border-gray-300"
+              } focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400`}
             />
+             {formik.touched.email && formik.errors.email && (
+                <p className="mt-1 text-sm text-red-600 font-medium">
+                  {formik.errors.email}
+                </p>
+              )}
           </div>
 
           {/* Password and Confirm Password in a row */}
@@ -122,9 +153,13 @@ export default function SignUp() {
                 placeholder="Enter password"
                 value={formik.values.password}
                 onChange={formik.handleChange}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400"
+                 className={`w-full px-4 py-3 rounded-lg border ${
+                formik.touched.password && formik.errors.password
+                  ? "border-red-500"
+                  : "border-gray-300"
+              } focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400`}
               />
-              <div className="absolute inset-y-0 right-0 pr-3 flex items-center top-6">
+              <div className="absolute inset-y-0 right-0  bottom-6 pr-3 flex items-center top-6">
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
@@ -133,6 +168,11 @@ export default function SignUp() {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+              {formik.touched.password && formik.errors.password && (
+                <p className="mt-1 text-sm text-red-600 font-medium">
+                  {formik.errors.password}
+                </p>
+              )}
             </div>
 
             <div className="relative">
@@ -149,9 +189,13 @@ export default function SignUp() {
                 placeholder="Confirm Password"
                 value={formik.values.confirmPassword}
                 onChange={formik.handleChange}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400"
+                className={`w-full px-4 py-3 rounded-lg border ${
+                formik.touched.confirmPassword && formik.errors.confirmPassword
+                  ? "border-red-500"
+                  : "border-gray-300"
+              } focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400`}
               />
-              <div className="absolute inset-y-0 right-0 pr-3 flex items-center top-6">
+              <div className="absolute inset-y-0 right-0 bottom-6 pr-3 flex items-center top-6">
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showconfirmPassword)}
@@ -164,6 +208,11 @@ export default function SignUp() {
                   )}
                 </button>
               </div>
+              {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+                <p className="mt-1 text-sm text-red-600 font-medium">
+                  {formik.errors.confirmPassword}
+                </p>
+              )}
             </div>
 
             {formik.values.password &&
@@ -246,9 +295,10 @@ export default function SignUp() {
             <div>
               <button
                 type="submit"
+                disabled={loading}
                 className="w-full py-3 px-4 bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition duration-300"
               >
-                Create Account
+                {loading ? "Creating..." : "Create Account"}
               </button>
             </div>
           </div>
