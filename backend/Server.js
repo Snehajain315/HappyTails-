@@ -16,7 +16,7 @@ const PORT= process.env.PORT || 5500;
 
 //middlewares:-
 app.use(cors({
-  origin: ["https://happy-tails-iota.vercel.app/"],
+  origin: ["https://happy-tails-iota.vercel.app" , "http://localhost:5173"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));

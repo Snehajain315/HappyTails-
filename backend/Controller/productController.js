@@ -6,7 +6,7 @@ let productController= {
     async getAllProducts(req,res){
     try{
         let Products= await productModel.find({}).limit().skip()
-        res.status(201).json(Products);
+        res.status(200).json(Products);
     }
     catch(err){
         res.status(500).json({message: err})
@@ -17,7 +17,7 @@ let productController= {
     async getProductById(req,res){
         try{
             let Product= await productModel.findById(req.params.id)
-            res.status(201).json(Product);
+            res.status(200).json(Product);
         }
         catch(err){
             res.status(500).json({message: err})
