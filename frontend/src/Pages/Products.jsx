@@ -10,7 +10,7 @@ export default function CategoryProducts({setCartData, setWishListData}) {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await axios.get(" https://happytails-wkk8.onrender.com/api/product/",{
+        const res = await axios.get("https://happytails-wkk8.onrender.com/api/product/",{
           withCredentials: true
         });
         const filtered = res.data.filter((item) => item.category === slug);
