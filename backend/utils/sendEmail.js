@@ -11,8 +11,12 @@ export const sendEmail = async (to, htmlContent, subject) => {
       pass: process.env.EMAIL_PASS,
     },
   });
+  try {
     await transporter.verify();
-    console.log("SMTP connection success");
+    console.log("✅ SMTP ready");
+  } catch (err) {
+    console.error("❌ SMTP connection failed:", err);
+  }
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
