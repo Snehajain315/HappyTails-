@@ -8,7 +8,7 @@ export const sendEmail = async (to, htmlContent, subject) => {
     client.setApiKey(SibApiV3Sdk.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
     await client.sendTransacEmail({
-      sender: { email: process.env.EMAIL_USER },
+      sender: { email: "no-reply@brevo.com" },
       to: [{ email: to }],
       subject,
       htmlContent,
