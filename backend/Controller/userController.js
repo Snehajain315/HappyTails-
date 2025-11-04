@@ -1,6 +1,6 @@
 import userModel from "../Models/userModel.js";
 import bcryptjs from "bcryptjs";
-import crypto from 'crypto';
+import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/sendEmail.js";
 import "dotenv/config";
@@ -55,36 +55,40 @@ const userController = {
     }
   },
 
-  //forgot-password: 
-  async forgotPassword(req, res){
-   const {email} = req.body;
-   try{
-    const user= await userModel.findOne({email})
-    if(!user)
-      return res.status(400).json({message: "User not found with this email"});
+  //forgot-password:
+  async forgotPassword(req, res) {
+    const { email } = req.body;
+    try {
+      const user = await userModel.findOne({ email });
+      console.log(user);
+      if (!user)
+        return res
+          .status(400)
+          .json({ message: "User not found with this email" });
+   
+      //Generate random token
+      const token = crypto.randomBytes(32).toString("hex");
+      console.log(token);
+      user.resetToken = token;
+      user.resetTokenExpiry = Date.now() + 3600000;
+      await user.save();
 
-    //Generate random token
-    const token = crypto.randomBytes(32).toString("hex");
-    user.resetToken = token;
-    user.resetTokenExpiry= Date.now() + 3600000;
-    await user.save();
+      const resetLink = `http://localhost:5173/reset-password/${token}`;
 
-    const resetLink= `http://localhost:5173/reset-password/${token}`
-
-    //send email
-    await sendEmail(
-      user.email,
-      "password reset link",
-      `<p>Click below to reset your password: </p>
+      //send email
+      await sendEmail(
+        user.email,
+        "password reset link",
+        `<p>Click below to reset your password: </p>
       <a href= "${resetLink}"> ${resetLink}</a>
       `
-    );
+      );
 
-    res.json({message: "Password link sent to your email"})
-   }
-   catch(err){
-    res.status(500).json({message: err.message})
-   }
+      res.json({ message: "Password link sent to your email" });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: err.message });
+    }
   },
 
   //Create new user code:

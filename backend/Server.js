@@ -11,8 +11,13 @@ import userRoute from "./Routes/userRoute.js";
 import productRoute from "./Routes/productRoute.js";
 import petRoute from "./Routes/petRoute.js";
 
+
 const app = express();
 const PORT= process.env.PORT || 5500;
+
+ console.log("heyy")
+        console.log("USER:", process.env.EMAIL_USER);
+        console.log("PASS:", process.env.EMAIL_PASS ? "Loaded ✅" : "Not loaded ❌");
 
 //middlewares:-
 app.use(cors({
