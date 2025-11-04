@@ -11,8 +11,8 @@ export const sendEmail = async (to, htmlContent, subject) => {
       pass: process.env.EMAIL_PASS,
     },
   });
-  //   await transporter.verify();
-  //   console.log("SMTP connection success");
+    await transporter.verify();
+    console.log("SMTP connection success");
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
