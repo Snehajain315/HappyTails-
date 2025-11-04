@@ -1,29 +1,22 @@
-import nodemailer from "nodemailer";
+// utils/sendEmail.js
+import SibApiV3Sdk from "@sendinblue/client";
 import "dotenv/config";
 
 export const sendEmail = async (to, htmlContent, subject) => {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT) || 587,
-    secure: true,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
   try {
-    await transporter.verify();
-    console.log("✅ SMTP ready");
+    const client = new SibApiV3Sdk.TransactionalEmailsApi();
+    client.setApiKey(SibApiV3Sdk.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
+
+    await client.sendTransacEmail({
+      sender: { email: process.env.EMAIL_USER },
+      to: [{ email: to }],
+      subject,
+      htmlContent,
+    });
+
+    console.log("✅ Email sent successfully to:", to);
   } catch (err) {
-    console.error("❌ SMTP connection failed:", err);
+    console.error("❌ Email sending failed:", err);
+    throw new Error("Email sending failed");
   }
-
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to,
-    subject,
-    html: htmlContent,
-  };
-
-  await transporter.sendMail(mailOptions);
 };
