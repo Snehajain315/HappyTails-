@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit"
-import { login, signup } from "../../services/authServices"
+import { forgotPassword, login, signup } from "../../services/authServices"
 
 export const loginThunk = createAsyncThunk(
     "user/loginThunk",
@@ -27,3 +27,15 @@ export const signupThunk = createAsyncThunk(
     }
 )
 
+export const forgotPasswordThunk = createAsyncThunk(
+    "user/forgotPasswordThunk",
+    async(email, {rejectWithValue})=>{
+        try{
+            const response = await forgotPassword(email);
+            return response;
+        }
+        catch(err){
+            return rejectWithValue(err.message || "something wrong!")
+        }
+    }
+)

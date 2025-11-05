@@ -27,7 +27,6 @@ const userController = {
   },
 
   //User Login Code:
-
   async loginUser(req, res) {
     const { email, password } = req.body;
     try {
@@ -83,10 +82,36 @@ const userController = {
       <a href= "${resetLink}"> ${resetLink}</a>
       `
       );
-
       res.json({ message: "Password link sent to your email" });
     } catch (err) {
       console.log(err);
+      res.status(500).json({ message: err.message });
+    }
+  },
+
+  //reset-password:
+ async resetPassword(req, res) {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    try {
+      const user = await userModel.findOne({
+        resetToken: token,
+        resetTokenExpiry: { $gt: Date.now() },
+      });
+
+      if (!user)
+        return res.status(400).json({ message: "Invalid or expired token" });
+
+      const hashedPassword = await bcryptjs.hash(password, 10);
+      user.password = hashedPassword;
+      user.resetToken = undefined;
+      user.resetTokenExpiry = undefined;
+
+      await user.save();
+      res.json({ message: "Password reset successful! You can now log in." });
+    } catch (err) {
+      console.error(err);
       res.status(500).json({ message: err.message });
     }
   },

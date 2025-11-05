@@ -13,7 +13,6 @@ let petSchema= new mongoose.Schema({
    gender:{enum:['male', 'female', 'unknown']},
 
    color:{type: String}
-
    
 })
 

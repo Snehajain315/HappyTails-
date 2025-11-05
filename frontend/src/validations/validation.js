@@ -12,3 +12,11 @@ export const signupValidationSchema= Yup.object({
     password: Yup.string().min(6, "Atleast 6 characters").required("Password is required"),
     confirmPassword: Yup.string().required("Confirm password is required")
 })
+
+export const forgotPassValidationSchema= Yup.object({
+    email: Yup.string().email("Invalid email").required("Email is required"),
+})
+
+export const resetPassValidationSchema = Yup.object({
+    password: Yup.string.min(6, "Atleast 6 characters").required("Password is required")
+})

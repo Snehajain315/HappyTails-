@@ -42,3 +42,41 @@ export const signup = async (formData) => {
     });
   }
 };
+
+export const forgotPassword= async(email)=>{
+  try{
+    const response = await axiosInstance.post(
+      API_PATHS.AUTH.FORGOT_PASSWORD, email
+    )
+    showToast({
+      message: response.data.message || " Reset Password link has been sent",
+      status: "success"
+    })
+    return response.data;
+  }
+  catch(err){
+    showToast({
+      message: err.response.data.message || "Reset link sending failed",
+      status: "error"
+    })
+  }
+}
+
+export const resetPassword= async(credentials)=>{
+  try{
+    const response= await axiosInstance.post(
+      API_PATHS.AUTH.RESET_PASSWORD, credentials
+    )
+    showToast({
+      message: response.data?.message,
+      status: "success"
+    })
+    return response.data
+  }
+  catch(err){
+    showToast({
+      message: `${err.response.data?.message}`,
+      status: "error"
+    })
+  }
+}

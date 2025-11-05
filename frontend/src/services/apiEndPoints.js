@@ -2,6 +2,8 @@ const API_PATHS = {
   AUTH: {
     LOGIN: "/user/login",
     SIGNUP: "/user/signup",
+    FORGOT_PASSWORD: "/user/forgot-password",
+    RESET_PASSWORD: "/user/reset-password"
   },
 
   USER: {

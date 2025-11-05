@@ -130,11 +130,11 @@ export default function SignUp() {
                   : "border-gray-300"
               } focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400`}
             />
-             {formik.touched.email && formik.errors.email && (
-                <p className="mt-1 text-sm text-red-600 font-medium">
-                  {formik.errors.email}
-                </p>
-              )}
+            {formik.touched.email && formik.errors.email && (
+              <p className="mt-1 text-sm text-red-600 font-medium">
+                {formik.errors.email}
+              </p>
+            )}
           </div>
 
           {/* Password and Confirm Password in a row */}
@@ -153,11 +153,11 @@ export default function SignUp() {
                 placeholder="Enter password"
                 value={formik.values.password}
                 onChange={formik.handleChange}
-                 className={`w-full px-4 py-3 rounded-lg border ${
-                formik.touched.password && formik.errors.password
-                  ? "border-red-500"
-                  : "border-gray-300"
-              } focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400`}
+                className={`w-full px-4 py-3 rounded-lg border ${
+                  formik.touched.password && formik.errors.password
+                    ? "border-red-500"
+                    : "border-gray-300"
+                } focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400`}
               />
               <div className="absolute inset-y-0 right-0  bottom-6 pr-3 flex items-center top-6">
                 <button
@@ -190,10 +190,11 @@ export default function SignUp() {
                 value={formik.values.confirmPassword}
                 onChange={formik.handleChange}
                 className={`w-full px-4 py-3 rounded-lg border ${
-                formik.touched.confirmPassword && formik.errors.confirmPassword
-                  ? "border-red-500"
-                  : "border-gray-300"
-              } focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400`}
+                  formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword
+                    ? "border-red-500"
+                    : "border-gray-300"
+                } focus:ring-2 focus:ring-teal-500 focus:border-transparent transition duration-300 placeholder-gray-400`}
               />
               <div className="absolute inset-y-0 right-0 bottom-6 pr-3 flex items-center top-6">
                 <button
@@ -208,11 +209,12 @@ export default function SignUp() {
                   )}
                 </button>
               </div>
-              {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600 font-medium">
-                  {formik.errors.confirmPassword}
-                </p>
-              )}
+              {formik.touched.confirmPassword &&
+                formik.errors.confirmPassword && (
+                  <p className="mt-1 text-sm text-red-600 font-medium">
+                    {formik.errors.confirmPassword}
+                  </p>
+                )}
             </div>
 
             {formik.values.password &&
