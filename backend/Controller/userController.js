@@ -10,7 +10,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Helper: Generate JWT token
 const generateToken = (id) =>
-  jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
+  jwt.sign({ id }, process.env.SECRET_KEY, { expiresIn: "30d" });
 
 // Helper: Error handler
 const handleError = (res, error) => {
