@@ -36,6 +36,7 @@ export const signup = async (formData) => {
       message: "Account created successfully",
       status: "success",
     });
+    console.log(response.data);
     return response.data;
   } catch (err) {
     showToast({

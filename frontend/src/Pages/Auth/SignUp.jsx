@@ -16,7 +16,7 @@ export default function SignUp() {
   const [profilePicture, setProfilePicture] = useState(null);
   const [showconfirmPassword, setShowConfirmPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID);
+
 
   // ---------------- GOOGLE LOGIN SETUP ------------------
   useEffect(() => {
@@ -67,7 +67,6 @@ export default function SignUp() {
         form.append("profilePicture", profilePicture);
       }
       dispatch(signupThunk(form)).then(() => navigate("/login"));
-      resetForm();
     },
   });
 
@@ -182,9 +181,7 @@ export default function SignUp() {
               />
               <button
                 type="button"
-                onClick={() =>
-                  setShowConfirmPassword(!showconfirmPassword)
-                }
+                onClick={() => setShowConfirmPassword(!showconfirmPassword)}
                 className="text-gray-400 hover:text-indigo-600 focus:outline-none absolute right-3 top-10"
               >
                 {showconfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -237,9 +234,7 @@ export default function SignUp() {
                         type="file"
                         className="sr-only"
                         accept="image/*"
-                        onChange={(e) =>
-                          setProfilePicture(e.target.files[0])
-                        }
+                        onChange={(e) => setProfilePicture(e.target.files[0])}
                       />
                     </label>
                     <p className="text-sm text-gray-500">
@@ -254,7 +249,11 @@ export default function SignUp() {
             </div>
           </div>
 
-          <Button type="submit" title={loading ? "Creating..." : "Create Account"} />
+          <Button
+            type="submit"
+            title={loading ? "Creating..." : "Create Account"}
+            disabled={loading}
+          />
         </form>
 
         {/* Social Login Section */}

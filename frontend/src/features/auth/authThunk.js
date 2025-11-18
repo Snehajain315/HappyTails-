@@ -19,6 +19,7 @@ export const signupThunk = createAsyncThunk(
     async(formData, {rejectWithValue})=>{
         try{
             const response = await signup(formData);
+            console.log(response);
             return response;
         }
         catch(err){
