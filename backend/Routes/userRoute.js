@@ -3,7 +3,6 @@ import path from "path";
 import multer from "multer";
 import userController from "../Controller/userController.js";
 import { sendEmail } from "../utils/sendEmail.js";
-import {OAuth2Client} from "google-auth-library";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

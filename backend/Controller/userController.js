@@ -11,7 +11,7 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 // Helper: Generate JWT token
 const generateToken = (id) =>
   jwt.sign({ id }, process.env.SECRET_KEY, { expiresIn: "30d" });
-
+  console.log(process.env.SECRET_KEY);
 // Helper: Error handler
 const handleError = (res, error) => {
   res.status(500).json({ message: error.message || "Server Error" });
@@ -40,7 +40,7 @@ const userController = {
     }
   },
 
-  // User Login
+// User Login
   async loginUser(req, res) {
     const { email, password } = req.body;
 
@@ -130,7 +130,7 @@ const userController = {
         profilePicture,
         role,
       });
-
+      console.log(user);
       const token = generateToken(user._id);
 
       res.status(201).json({
