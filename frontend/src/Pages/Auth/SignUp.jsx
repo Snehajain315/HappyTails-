@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useFormik } from "formik";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signupThunk } from "../../features/auth/authThunk";
@@ -8,6 +9,8 @@ import { signupValidationSchema } from "../../validations/validation";
 import { generatedPassword } from "sneha-random-password-generator";
 import InputField from "../../Components/inputField";
 import Button from "../../Components/Button";
+import API_PATHS from "../../services/apiEndPoints";
+import { showToast } from "../../Components/toaster";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -17,7 +20,6 @@ export default function SignUp() {
   const [showconfirmPassword, setShowConfirmPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-
   // ---------------- GOOGLE LOGIN SETUP ------------------
   useEffect(() => {
     /* global google */
@@ -26,25 +28,32 @@ export default function SignUp() {
         client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
         callback: handleGoogleLogin,
       });
+
+      google.accounts.id.renderButton(
+  document.getElementById("googleLoginBtn"),
+  { theme: "outline", size: "large" }
+);
     }
   }, []);
 
-  function handleGoogleLogin(response) {
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/auth/google`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ credential: response.credential }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Google signup:", data);
-
-        if (data.token) {
-          localStorage.setItem("token", data.token);
-          navigate("/");
-        }
-      })
-      .catch((err) => console.error("Google Login Error:", err));
+  async function handleGoogleLogin(response) {
+    try {
+      const res = await axios.post(
+        API_PATHS.AUTH.GOOGLE_LOGIN,
+        { credential: response.credential },
+        { withCredentials: true }
+      );
+      console.log(res.data);
+      if (res.data.token) {
+        localStorage.setItem("authToken", res.data.token);
+        navigate("/");  
+      }
+    } catch (err) {
+      showToast({
+        message: err.res.data.message || "something went wrong",
+        status: "error",
+      });  
+    }
   }
 
   const formik = useFormik({
@@ -284,17 +293,19 @@ export default function SignUp() {
 
             <div className="grid grid-cols-2 gap-3">
               {/* GOOGLE LOGIN BUTTON */}
-              <button
+              {/* <button
                 type="button"
                 onClick={() => google.accounts.id.prompt()}
                 className="w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
               >
                 Google
-              </button>
+              </button> */}
 
-              <button className="w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+              <div id="googleLoginBtn"></div>
+
+              {/* <button className="w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
                 Facebook
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

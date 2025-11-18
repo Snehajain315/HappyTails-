@@ -43,9 +43,9 @@ export const forgotPasswordThunk = createAsyncThunk(
 
 export const resetPasswordThunk = createAsyncThunk(
     "user/resetPasswordThunk",
-    async(credentials, {rejectWithValue})=>{
+    async({token,password}, {rejectWithValue})=>{
         try{
-            const response= await resetPassword(credentials);
+            const response= await resetPassword( token, password);
             return response;
         }
         catch(err){

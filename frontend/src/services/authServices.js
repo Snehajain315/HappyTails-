@@ -65,11 +65,11 @@ export const forgotPassword = async (email) => {
   }
 };
     
-export const resetPassword = async (credentials) => {
+export const resetPassword = async (token, password) => {
   try {
     const response = await axiosInstance.post(
-      API_PATHS.AUTH.RESET_PASSWORD,
-      credentials
+      `${API_PATHS.AUTH.RESET_PASSWORD}/${token}`,
+      {password}
     ); 
     showToast({
       message: `${response.data?.message}`,

@@ -26,7 +26,6 @@ export default function NavBar() {
     checkAuth();
   }, []);
 
-    console.log(userData)
   const handleLogOut = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("user");
