@@ -110,7 +110,7 @@ export default function NavBar() {
                   <span className="h-8 w-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                     {userData?.profilePicture ? (
                       <img
-                        src={`http://localhost:5173/${userData.profilePicture}`}
+                        src={`${import.meta.env.VITE_BACKEND_URL}/${userData.profilePicture}`}
                         alt={userData.name}
                         className="h-full w-full object-cover"
                       />
