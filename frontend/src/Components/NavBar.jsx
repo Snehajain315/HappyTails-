@@ -20,7 +20,7 @@ export default function NavBar() {
         } catch (err) {
           console.log("Failed to parse user Data");
           handleLogOut();
-        }                                      
+        }
       }
     };
     checkAuth();
@@ -118,9 +118,7 @@ export default function NavBar() {
                       <UserCircle size={34} className="text-gray-500" />
                     )}
                   </span>
-                    <p className="relative top-6 right-15">
-                    {userData.name}
-                    </p>
+                  <p className="relative top-6 right-15">{userData.name}</p>
                   <button
                     onClick={handleLogOut}
                     className="px-3 py-1 bg-red-500/80 hover:bg-red-600 rounded-full transition duration-300"

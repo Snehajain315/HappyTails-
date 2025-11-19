@@ -11,14 +11,13 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 // Helper: Generate JWT token
 const generateToken = (id) =>
   jwt.sign({ id }, process.env.SECRET_KEY, { expiresIn: "30d" });
-  console.log(process.env.SECRET_KEY);
+console.log(process.env.SECRET_KEY);
 // Helper: Error handler
 const handleError = (res, error) => {
   res.status(500).json({ message: error.message || "Server Error" });
 };
 
 const userController = {
-
   // Get All Users
   async getAllUsers(req, res) {
     try {
@@ -29,7 +28,7 @@ const userController = {
     }
   },
 
-// Get User by ID
+  // Get User by ID
   async getUserById(req, res) {
     try {
       const user = await userModel.findById(req.params.id);
@@ -40,7 +39,7 @@ const userController = {
     }
   },
 
-// User Login
+  // User Login
   async loginUser(req, res) {
     const { email, password } = req.body;
 
@@ -59,7 +58,7 @@ const userController = {
     }
   },
 
-// Forgot Password
+  // Forgot Password
   async forgotPassword(req, res) {
     const { email } = req.body;
 
@@ -88,7 +87,7 @@ const userController = {
     }
   },
 
-// Reset Password
+  // Reset Password
   async resetPassword(req, res) {
     const { token } = req.params;
     const { password } = req.body;
@@ -113,7 +112,7 @@ const userController = {
     }
   },
 
-// Signup User 
+  // Signup User
   async signupUser(req, res) {
     const { name, age, email, password, role } = req.body;
 
@@ -148,7 +147,7 @@ const userController = {
     }
   },
 
-// Google Sign-in
+  // Google Sign-in
   async googleSignIn(req, res) {
     try {
       const { credential } = req.body;
@@ -180,7 +179,7 @@ const userController = {
     }
   },
 
-// Update User
+  // Update User
   async updateUser(req, res) {
     try {
       const updated = await userModel.findByIdAndUpdate(
@@ -200,7 +199,7 @@ const userController = {
     }
   },
 
-// Delete User
+  // Delete User
   async removeUser(req, res) {
     try {
       const deleted = await userModel.findByIdAndDelete(req.params.id);
