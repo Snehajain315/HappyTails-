@@ -4,6 +4,7 @@ export const axiosInstance = axios.create({
   baseURL: "https://happytails-wkk8.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
+    "Content-Type": "multipart/form-data"
   },
 });
 

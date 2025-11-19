@@ -243,10 +243,7 @@ export default function SignUp() {
                         type="file"
                         className="sr-only"
                         accept="image/*"
-                        onChange={(e) =>{
-                           setProfilePicture(e.target.files[0])
-                           formik.setFieldValue("profilePicture", e.target.files[0])
-                          }}
+                        onChange={(e) => setProfilePicture(e.target.files[0])}
                       />
                     </label>
                     <p className="text-sm text-gray-500">

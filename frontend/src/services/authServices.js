@@ -6,7 +6,7 @@ export const login = async (body) => {
   try {
     const response = await axiosInstance.post(`${API_PATHS.AUTH.LOGIN}`, body);
     localStorage.setItem("authToken", response.data.token);
-    localStorage.setItem("role", response.data.user.role);
+    //localStorage.setItem("role", response.data.user.role);
     localStorage.setItem("user", JSON.stringify(response.data.user));
     console.log(response.data.user)
     showToast({

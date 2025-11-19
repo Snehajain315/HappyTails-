@@ -1,17 +1,12 @@
 import { Router } from "express";
 import path from "path";
 import multer from "multer";
-import { fileURLToPath } from "url";
-
 import userController from "../Controller/userController.js";
 import { sendEmail } from "../utils/sendEmail.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../../uploads"));
+    cb(null, "uploads/");
   },
 
   filename: (req, file, cb) => {
@@ -59,5 +54,7 @@ router.post("/auth/google", userController.googleSignIn);
 router.put("/update/:id", userController.updateUser);
 
 router.delete("/delete/:id", userController.removeUser);
+
+
 
 export default router;
