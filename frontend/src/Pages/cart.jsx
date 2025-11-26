@@ -1,7 +1,25 @@
 import React from "react";
-import { Heart, ShoppingCart, Star, Package, Minus, Plus, Trash2, Eye } from "lucide-react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  Heart,
+  ShoppingCart,
+  Star,
+  Package,
+  Minus,
+  Plus,
+  Trash2,
+  Eye,
+} from "lucide-react";
+import {
+  removeFromCart,
+  increaseQty,
+  decreaseQty,
+} from "../features/Cart/cartSlice";
+import { ButtonAction } from "../Components/ActionButton";
 
-export default function Cart({ cartData = [] }) {
+export default function Cart() {
+  const cartData = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100">
@@ -20,7 +38,8 @@ export default function Cart({ cartData = [] }) {
           {cartData.length > 0 && (
             <div className="mt-4 inline-flex items-center bg-white rounded-full px-6 py-2 shadow-md">
               <span className="text-gray-600 font-medium">
-                {cartData.length} {cartData.length === 1 ? 'item' : 'items'} in cart
+                {cartData.length} {cartData.length === 1 ? "item" : "items"} in
+                cart
               </span>
             </div>
           )}
@@ -33,7 +52,9 @@ export default function Cart({ cartData = [] }) {
             <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <ShoppingCart className="w-12 h-12 text-gray-400" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">Your cart is empty</h3>
+            <h3 className="text-xl font-semibold text-gray-600 mb-2">
+              Your cart is empty
+            </h3>
             <p className="text-gray-500 mb-6">Add some items to get started</p>
             <button className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-3 rounded-xl font-medium hover:shadow-lg transition-all duration-300 hover:scale-105">
               Continue Shopping
@@ -56,14 +77,26 @@ export default function Cart({ cartData = [] }) {
                         alt={item.name}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
-                      
+
                       {/* Quick Actions */}
                       <div className="absolute top-3 right-3 flex flex-col gap-2">
-                        <button className="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-sm hover:bg-white transition-all duration-300 hover:scale-110">
-                          <Heart size={16} className="text-gray-600 hover:text-red-500 hover:fill-red-500" />
+                        <button
+                          className="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-sm 
+                   hover:bg-white transition-all duration-300 hover:scale-110"
+                        >
+                          <Heart
+                            size={16}
+                            className="text-gray-600 hover:text-red-500 hover:fill-red-500"
+                          />
                         </button>
-                        <button className="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-sm hover:bg-white transition-all duration-300 hover:scale-110">
-                          <Eye size={16} className="text-gray-600 hover:text-blue-500" />
+                        <button
+                          className="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-sm 
+                   hover:bg-white transition-all duration-300 hover:scale-110"
+                        >
+                          <Eye
+                            size={16}
+                            className="text-gray-600 hover:text-blue-500"
+                          />
                         </button>
                       </div>
                     </div>
@@ -74,36 +107,24 @@ export default function Cart({ cartData = [] }) {
                         <h3 className="text-xl font-bold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors duration-300">
                           {item.name}
                         </h3>
-                        <button className="text-gray-400 hover:text-red-500 transition-colors duration-300 ml-4">
-                          <Trash2 size={20} />
-                        </button>
+                        <ButtonAction
+                          onClick={() => dispatch(removeFromCart(item._id))}
+                          className="text-gray-400 hover:text-red-500 transition-colors duration-300 ml-4"
+                          title={<Trash2 size={20} />}
+                        />  
                       </div>
-                      
+
                       <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
                         {item.description}
                       </p>
-
-                      {/* Rating */}
-                      <div className="flex items-center mb-4">
-                        <div className="flex items-center">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              size={16}
-                              className={`${
-                                i < 4 ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'
-                              }`}
-                            />
-                          ))}
-                        </div>
-                        <span className="text-sm text-gray-500 ml-2 font-medium">(4.0)</span>
-                      </div>
 
                       {/* Weight/Size Info */}
                       {item.weight && (
                         <div className="flex items-center mb-4 text-sm text-gray-500 bg-gray-50 rounded-lg px-3 py-2 w-fit">
                           <Package size={16} className="mr-2 text-blue-500" />
-                          <span className="font-medium">{item.weight.value} {item.weight.unit}</span>
+                          <span className="font-medium">
+                            {item.weight.value} {item.weight.unit}
+                          </span>
                         </div>
                       )}
 
@@ -117,18 +138,22 @@ export default function Cart({ cartData = [] }) {
                             ₹{Math.round(item.price * 1.2)}
                           </span>
                         </div>
-                        
+
                         {/* Quantity Controls */}
                         <div className="flex items-center bg-gray-50 rounded-xl p-1">
-                          <button className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center hover:bg-gray-100 transition-colors duration-200">
-                            <Minus size={16} className="text-gray-600" />
-                          </button>
+                          <ButtonAction 
+                           onClick={()=> dispatch(decreaseQty(item._id))}
+                           title={<Minus size={16} className="text-gray-600" />}
+                          />
+
                           <span className="mx-4 font-semibold text-gray-800 min-w-[2rem] text-center">
-                            {item.quantity || 1}
+                            {item.quantity}
                           </span>
-                          <button className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center hover:bg-gray-100 transition-colors duration-200">
-                            <Plus size={16} className="text-gray-600" />
-                          </button>
+
+                          <ButtonAction 
+                           onClick={()=> dispatch(increaseQty(item._id))}
+                           title={<Plus size={16} className="text-gray-600"/>}
+                          />
                         </div>
                       </div>
                     </div>
@@ -140,11 +165,15 @@ export default function Cart({ cartData = [] }) {
             {/* Order Summary */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-8 border border-gray-100">
-                <h3 className="text-xl font-bold text-gray-800 mb-6">Order Summary</h3>
-                
+                <h3 className="text-xl font-bold text-gray-800 mb-6">
+                  Order Summary
+                </h3>
+
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Subtotal ({cartData.length} items)</span>
+                    <span className="text-gray-600">
+                      Subtotal ({cartData.length} items)
+                    </span>
                     <span className="font-semibold">₹1,299</span>
                   </div>
                   <div className="flex justify-between">

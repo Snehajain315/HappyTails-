@@ -4,6 +4,7 @@ import { forgotPassword, login, resetPassword, signup } from "../../services/aut
 export const loginThunk = createAsyncThunk(
     "user/loginThunk",
     async(body, {rejectWithValue})=>{
+        console.log(body, "Body")
         try{
         const response = await login(body);
         return response;
@@ -19,7 +20,6 @@ export const signupThunk = createAsyncThunk(
     async(formData, {rejectWithValue})=>{
         try{
             const response = await signup(formData);
-            console.log(response);
             return response;
         }
         catch(err){

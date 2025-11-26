@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Cat, ShoppingCart, Heart, UserCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function NavBar() {
   let navigate = useNavigate();
   let [isLoggedIn, setIsLoggedIn] = useState(false);
   let [userData, setUserData] = useState(null);
+  const cartData= useSelector((state)=>state.cart.items);
 
   useEffect(() => {
     const checkAuth = () => {
@@ -22,9 +24,11 @@ export default function NavBar() {
           handleLogOut();
         }
       }
-    };   
+    };
     checkAuth();
   }, []);
+
+  const url = import.meta.env.VITE_BACKEND_URL;
 
   const handleLogOut = () => {
     localStorage.removeItem("authToken");
@@ -76,7 +80,7 @@ export default function NavBar() {
                   onClick={() => navigate("/Cart")}
                 />
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  0
+                  {cartData.length}
                 </span>
               </li>
               <li>
@@ -110,7 +114,7 @@ export default function NavBar() {
                   <span className="h-8 w-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                     {userData?.profilePicture ? (
                       <img
-                        src={`http://localhost:5173/${userData.profilePicture}`}
+                        src={userData.profilePicture}
                         alt={userData.name}
                         className="h-full w-full object-cover"
                       />
@@ -118,7 +122,7 @@ export default function NavBar() {
                       <UserCircle size={34} className="text-gray-500" />
                     )}
                   </span>
-                  <p className="relative top-6 right-15">{userData.name}</p>
+                  <p className="relative top-6 right-15">{userData?.name}</p>
                   <button
                     onClick={handleLogOut}
                     className="px-3 py-1 bg-red-500/80 hover:bg-red-600 rounded-full transition duration-300"

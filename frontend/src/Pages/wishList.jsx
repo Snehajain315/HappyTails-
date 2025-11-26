@@ -1,7 +1,13 @@
 import React from "react";
 import { Star, Package, Heart, Eye, ShoppingCart } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../features/Cart/cartSlice";
 
-export default function WishList({ wishListData = [] }) {
+export default function WishList() {
+
+  const wishListData= useSelector((state)=> state.wishlist.wishlistItems);
+  const dispatch = useDispatch();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-100">
       {/* Header Section */}
@@ -62,10 +68,7 @@ export default function WishList({ wishListData = [] }) {
                     <div className="flex gap-2">
                       <button className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2.5 rounded-xl font-medium transition-all duration-300 hover:shadow-lg flex items-center justify-center space-x-2 hover:scale-105">
                         <ShoppingCart size={16} />
-                        <span>Add to Cart</span>
-                      </button>
-                      <button className="bg-white/90 backdrop-blur-sm text-gray-700 p-2.5 rounded-xl transition-all duration-300 hover:bg-white hover:scale-105">
-                        <Eye size={16} />
+                        <span onClick={()=>dispatch(addToCart(item))}>Add to Cart</span>
                       </button>
                     </div>
                   </div>
@@ -76,26 +79,9 @@ export default function WishList({ wishListData = [] }) {
                   <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-2 group-hover:text-purple-600 transition-colors duration-300">
                     {item.name}
                   </h3>
-                  
                   <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
                     {item.description}
                   </p>
-
-                  {/* Rating Stars */}
-                  <div className="flex items-center mb-4">
-                    <div className="flex items-center">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          size={16}
-                          className={`${
-                            i < 4 ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'
-                          } transition-colors duration-200`}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-sm text-gray-500 ml-2 font-medium">(4.0)</span>
-                  </div>
 
                   {/* Weight/Size Info */}
                   {item.weight && (
@@ -115,9 +101,9 @@ export default function WishList({ wishListData = [] }) {
                         ₹{Math.round(item.price * 1.2)}
                       </span>
                     </div>
-                    <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                    {/* <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
                       {Math.round(((item.price * 1.2 - item.price) / (item.price * 1.2)) * 100)}% OFF
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

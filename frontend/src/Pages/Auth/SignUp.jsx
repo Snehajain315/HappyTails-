@@ -20,42 +20,6 @@ export default function SignUp() {
   const [showconfirmPassword, setShowConfirmPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // ---------------- GOOGLE LOGIN SETUP ------------------
-  useEffect(() => {
-    /* global google */
-    if (window.google) {
-      google.accounts.id.initialize({
-        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-        callback: handleGoogleLogin,
-      });
-
-      google.accounts.id.renderButton(
-  document.getElementById("googleLoginBtn"),
-  { theme: "outline", size: "large" }
-);
-    }
-  }, []);
-
-  async function handleGoogleLogin(response) {
-    try {
-      const res = await axios.post(
-        API_PATHS.AUTH.GOOGLE_LOGIN,
-        { credential: response.credential },
-        { withCredentials: true }
-      );
-      console.log(res.data);
-      if (res.data.token) {
-        localStorage.setItem("authToken", res.data.token);
-        navigate("/");  
-      }
-    } catch (err) {
-      showToast({
-        message: err.res.data.message || "something went wrong",
-        status: "error",
-      });  
-    }
-  }
-
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -277,36 +241,6 @@ export default function SignUp() {
                 Log in
               </span>
             </p>
-          </div>
-
-          <div>
-            <div className="relative mb-4">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">
-                  Or sign up with
-                </span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              {/* GOOGLE LOGIN BUTTON */}
-              {/* <button
-                type="button"
-                onClick={() => google.accounts.id.prompt()}
-                className="w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
-              >
-                Google
-              </button> */}
-
-              <div id="googleLoginBtn"></div>
-
-              {/* <button className="w-full py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                Facebook
-              </button> */}
-            </div>
           </div>
         </div>
       </div>

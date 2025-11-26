@@ -4,9 +4,9 @@ const API_PATHS = {
     SIGNUP: "/user/signup",
     FORGOT_PASSWORD: "/user/forgot-password",
     RESET_PASSWORD: "/user/reset-password",
-    GOOGLE_LOGIN: "/user/auth/google"
+    GOOGLE_LOGIN: "/user/auth/google",
   },
-
+  
   USER: {
     USER_BY_ID: "/user",
     UPDATE: "/update",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { useFormik } from "formik";
@@ -7,6 +7,10 @@ import { loginThunk } from "../../features/auth/authThunk";
 import { loginValidationSchema } from "../../validations/validation";
 import InputField from "../../Components/inputField";
 import Button from "../../Components/Button";
+import { GoogleLogin } from "@react-oauth/google";
+import { showToast } from "../../Components/toaster";
+import { axiosInstance } from "../../helpers/axiosInterceptors";
+import API_PATHS from "../../services/apiEndPoints";
 
 export default function Login() {
   const { loading } = useSelector((state) => state.auth);
@@ -15,6 +19,42 @@ export default function Login() {
 
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  // ---------------- GOOGLE LOGIN SETUP ------------------
+  useEffect(() => {
+    /* global google */
+    if (window.google) {
+      google.accounts.id.initialize({
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+        callback: handleGoogleLogin,
+      });
+
+      google.accounts.id.renderButton(
+        document.getElementById("googleLoginBtn"),
+        { theme: "outline", size: "large" }
+      );
+    }
+  }, []);
+
+  async function handleGoogleLogin(response) {
+    try {
+      const res = await axios.post(
+        API_PATHS.AUTH.GOOGLE_LOGIN,
+        { credential: response.credential },
+        { withCredentials: true }
+      );
+      console.log(res.data);
+      if (res.data.token) {
+        localStorage.setItem("authToken", res.data.token);
+        navigate("/");
+      }
+    } catch (err) {
+      showToast({
+        message: err.res.data.message || "something went wrong",
+        status: "error",
+      });
+    }
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -26,6 +66,38 @@ export default function Login() {
       dispatch(loginThunk(values)).then(() => navigate("/"));
     },
   });
+
+  const responseMessage = async (response) => {
+    try {
+      const res = await axiosInstance.post(
+        API_PATHS.AUTH.GOOGLE_LOGIN,
+        { credential: response.credential },
+        { withCredentials: true }
+      );
+
+      if (res.data.token) {
+        localStorage.setItem("authToken", res.data.token);
+
+        if (res.data.user) {
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+        }
+
+        navigate("/");
+        window.location.reload(); // important to refresh navbar UI
+      }
+    } catch (err) {
+      showToast({
+        message: "something went wrong",
+        status: "error",
+      });
+    }
+  };
+  const errorMessage = (error) => {
+    showToast({
+      message: "Google login error",
+      status: "error",
+    });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-teal-100 to-emerald-100">
@@ -111,6 +183,19 @@ export default function Login() {
             disabled={loading}
             title={loading ? "Logging in..." : "Log In"}
           />
+          <div className="relative mb-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">
+                Or log in with
+              </span>
+            </div>
+          </div>
+          <div className="w-full flex justify-center">
+            <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+          </div>
         </form>
 
         {/* Sign Up Link */}
