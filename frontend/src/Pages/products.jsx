@@ -10,7 +10,7 @@ import {
   ListCollapse,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../features/Cart/cartSlice";
+import { addToCart } from "../features/cart/cartSlice";
 import { addToWishlist } from "../features/wishlist/wishlistSlice";
 import { fetchProductThunk } from "../features/product/productThunk";
 
