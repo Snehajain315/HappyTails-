@@ -11,14 +11,16 @@ import {
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../features/cart/cartSlice";
-import { addToWishlist } from "../features/wishlist/wishlistSlice";
+import { addToWishlist, removeFromWishlist } from "../features/wishlist/wishlistSlice";
 import { fetchProductThunk } from "../features/product/productThunk";
+import { showToast } from "../Components/toaster";
 
 export default function CategoryProducts() {
   const { slug } = useParams(); // Get category slug from URL
   const [localProducts, setLocalProducts] = useState([]);
   const dispatch = useDispatch();
   const { products, loading, error } = useSelector((state) => state.product);
+  const wishlistData = useSelector((state) => state.wishlist.wishlistItems);
 
   useEffect(() => {
     dispatch(fetchProductThunk());
@@ -60,7 +62,7 @@ export default function CategoryProducts() {
         {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {localProducts.length > 0 ? (
-            localProducts.map((item)  => (
+            localProducts.map((item) => (
               <div
                 key={item._id}
                 className="bg-white rounded-xl shadow-md overflow-hidden transition duration-300 transform hover:scale-105 hover:shadow-xl group"
@@ -93,7 +95,6 @@ export default function CategoryProducts() {
                   <p className="text-gray-600 text-sm mb-3 line-clamp-2">
                     {item.description}
                   </p>
-                  
 
                   {/* Weight/Size Info */}
                   {item.weight && (
@@ -117,15 +118,30 @@ export default function CategoryProducts() {
                     </div>
 
                     <div className="flex space-x-2">
-                      <button
-                        className="p-2 rounded-full bg-emerald-100 text-emerald-600 hover:bg-emerald-200 transition duration-300"
-                        onClick={() => dispatch(addToWishlist(item))}
-                      >
-                        <Heart size={18} />
+                      <button className="p-2 rounded-full bg-emerald-100 text-emerald-600 hover:bg-emerald-200 transition duration-300">
+                        <Heart
+                          size={16}
+                          onClick={() =>
+                            wishlistData.some((w) => w._id === item._id)
+                              ? dispatch(removeFromWishlist(item._id))
+                              : dispatch(addToWishlist(item))
+                          }
+                          className={`cursor-pointer transition 
+                            ${
+                              wishlistData.some((w) => w._id === item._id)
+                                ? "text-red-500 fill-red-500"
+                                : "text-gray-600"
+                            }`}
+                        />
                       </button>
                       <button
                         className="p-2 rounded-full bg-teal-100 text-teal-600 hover:bg-teal-200 transition duration-300"
-                        onClick={() => dispatch(addToCart(item))}
+                        onClick={() => {
+                          showToast({
+                            message: "Added in Cart",
+                            status: "success"
+                          })
+                          dispatch(addToCart(item))}}
                       >
                         <ShoppingCart size={18} />
                       </button>

@@ -1,19 +1,25 @@
 import mongoose from "mongoose";
 
-let petSchema= new mongoose.Schema({
+let petSchema = new mongoose.Schema({
 
-   name:{type: String, require: true},
+  poster: {type : String },
 
-   category:{type:String,  require: true},
+  name: { type: String, require: true },
 
-   breed:{type:String,  require: true},
+  category: { type: String, require: true },
 
-   age:{type:Number, require:true},
+  breed: { type: String, require: true },
 
-   gender:{enum:['male', 'female', 'unknown']},
+  age: { type: Number, require: true },
 
-   color:{type: String}
-   
-})
+  gender: {
+    type: String, require: true,
+    enum: ["male", "female", "unknown"],
+  },
 
-export default mongoose.model('petModel', petSchema);
+  color: { type: String },
+
+  price: {type: Number, require: true}
+});
+
+export default mongoose.model("petModel", petSchema);

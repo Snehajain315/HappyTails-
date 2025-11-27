@@ -16,9 +16,11 @@ import {
   decreaseQty,
 } from "../features/cart/cartSlice";
 import { ButtonAction } from "../Components/ActionButton";
+import { addToWishlist, removeFromWishlist } from "../features/wishlist/wishlistSlice";
 
 export default function Cart() {
   const cartData = useSelector((state) => state.cart.items);
+  const wishlistData = useSelector((state)=> state.wishlist.wishlistItems)
   const dispatch = useDispatch();
 
   return (
@@ -86,7 +88,17 @@ export default function Cart() {
                         >
                           <Heart
                             size={16}
-                            className="text-gray-600 hover:text-red-500 hover:fill-red-500"
+                            onClick={() =>
+                              wishlistData.some((w) => w._id === item._id)
+                                ? dispatch(removeFromWishlist(item._id))
+                                : dispatch(addToWishlist(item))
+                            }
+                            className={`cursor-pointer transition 
+    ${
+      wishlistData.some((w) => w._id === item._id)
+        ? "text-red-500 fill-red-500"
+        : "text-gray-600"
+    }`}
                           />
                         </button>
                         <button
@@ -111,7 +123,7 @@ export default function Cart() {
                           onClick={() => dispatch(removeFromCart(item._id))}
                           className="text-gray-400 hover:text-red-500 transition-colors duration-300 ml-4"
                           title={<Trash2 size={20} />}
-                        />  
+                        />
                       </div>
 
                       <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
@@ -141,18 +153,20 @@ export default function Cart() {
 
                         {/* Quantity Controls */}
                         <div className="flex items-center bg-gray-50 rounded-xl p-1">
-                          <ButtonAction 
-                           onClick={()=> dispatch(decreaseQty(item._id))}
-                           title={<Minus size={16} className="text-gray-600" />}
+                          <ButtonAction
+                            onClick={() => dispatch(decreaseQty(item._id))}
+                            title={
+                              <Minus size={16} className="text-gray-600" />
+                            }
                           />
 
                           <span className="mx-4 font-semibold text-gray-800 min-w-[2rem] text-center">
                             {item.quantity}
                           </span>
 
-                          <ButtonAction 
-                           onClick={()=> dispatch(increaseQty(item._id))}
-                           title={<Plus size={16} className="text-gray-600"/>}
+                          <ButtonAction
+                            onClick={() => dispatch(increaseQty(item._id))}
+                            title={<Plus size={16} className="text-gray-600" />}
                           />
                         </div>
                       </div>

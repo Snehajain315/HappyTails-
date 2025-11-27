@@ -2,10 +2,10 @@ import React from "react";
 import { Star, Package, Heart, Eye, ShoppingCart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../features/cart/cartSlice";
+import { showToast } from "../Components/toaster";
 
 export default function WishList() {
-
-  const wishListData= useSelector((state)=> state.wishlist.wishlistItems);
+  const wishListData = useSelector((state) => state.wishlist.wishlistItems);
   const dispatch = useDispatch();
 
   return (
@@ -32,8 +32,12 @@ export default function WishList() {
             <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
               <Heart className="w-12 h-12 text-gray-400" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">Your wishlist is empty</h3>
-            <p className="text-gray-500">Start adding items you love to see them here</p>
+            <h3 className="text-xl font-semibold text-gray-600 mb-2">
+              Your wishlist is empty
+            </h3>
+            <p className="text-gray-500">
+              Start adding items you love to see them here
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -49,15 +53,15 @@ export default function WishList() {
                     alt={item.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  
+
                   {/* Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
+
                   {/* Wishlist Heart */}
                   <div className="absolute top-4 right-4">
                     <div className="bg-white/90 backdrop-blur-sm rounded-full p-2.5 shadow-lg hover:bg-white transition-all duration-300 hover:scale-110">
-                      <Heart 
-                        size={20} 
+                      <Heart
+                        size={20}
                         className="text-red-500 fill-red-500 cursor-pointer"
                       />
                     </div>
@@ -68,7 +72,17 @@ export default function WishList() {
                     <div className="flex gap-2">
                       <button className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2.5 rounded-xl font-medium transition-all duration-300 hover:shadow-lg flex items-center justify-center space-x-2 hover:scale-105">
                         <ShoppingCart size={16} />
-                        <span onClick={()=>dispatch(addToCart(item))}>Add to Cart</span>
+                        <span
+                          onClick={() => {
+                            showToast({
+                              message: "Added in Cart",
+                              status: "success",
+                            });
+                            dispatch(addToCart(item));
+                          }}
+                        >
+                          Add to Cart
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -87,7 +101,9 @@ export default function WishList() {
                   {item.weight && (
                     <div className="flex items-center mb-4 text-sm text-gray-500 bg-gray-50 rounded-lg px-3 py-2">
                       <Package size={16} className="mr-2 text-purple-500" />
-                      <span className="font-medium">{item.weight.value} {item.weight.unit}</span>
+                      <span className="font-medium">
+                        {item.weight.value} {item.weight.unit}
+                      </span>
                     </div>
                   )}
 
