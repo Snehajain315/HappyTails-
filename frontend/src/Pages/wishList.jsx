@@ -1,7 +1,7 @@
 import React from "react";
 import { Star, Package, Heart, Eye, ShoppingCart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../features/Cart/cartSlice";
+import { addToCart } from "../features/cart/cartSlice";
 
 export default function WishList() {
 
