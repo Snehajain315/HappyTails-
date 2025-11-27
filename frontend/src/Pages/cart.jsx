@@ -14,7 +14,7 @@ import {
   removeFromCart,
   increaseQty,
   decreaseQty,
-} from "../features/Cart/cartSlice";
+} from "../features/cart/cartSlice";
 import { ButtonAction } from "../Components/ActionButton";
 
 export default function Cart() {
