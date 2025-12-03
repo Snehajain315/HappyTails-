@@ -15,7 +15,7 @@ export default function ProductCard({
   showOverlayButton = false,
   overlayButtonText,
   overlayButtonLogo,
-  onClick,   
+  onClick,
 }) {
   return (
     <div className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl ${containerClass}`} >

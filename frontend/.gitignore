@@ -26,3 +26,4 @@ dist-ssr
 
 #Environment Variables
 backend/.env
+frontend/.env

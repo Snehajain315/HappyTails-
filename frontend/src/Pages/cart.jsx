@@ -11,7 +11,7 @@ import {
   Eye,
 } from "lucide-react";
 import {
-  removeFromCart,
+  removeFromCart, 
   increaseQty,
   decreaseQty,
 } from "../features/cart/cartSlice";
